@@ -1,14 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Disc3,
-  Upload,
-  Music,
-  Image as ImageIcon,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { Disc3, Upload, Image as ImageIcon, Sparkles, X } from "lucide-react";
 
 interface TrackFormProps {
   title: string;
