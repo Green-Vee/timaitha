@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
@@ -156,7 +155,6 @@ export default function DiscoverModal({
                   className="bg-slate-950/60 border border-slate-800/80 hover:border-indigo-500/50 rounded-2xl p-3 transition group cursor-pointer flex flex-col justify-between shadow-lg"
                 >
                   <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-slate-900 mb-3">
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={track.coverUrl}
                       alt={track.title}

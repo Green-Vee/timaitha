@@ -2,23 +2,62 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Sparkles } from "lucide-react";
+import { Search, Sparkles, Loader2 } from "lucide-react";
 
 interface HeroSectionProps {
-  onExplore: (searchQuery: string) => void;
+  // Pass the extracted tracks/results back up to your parent display view
+  onResults: (results: unknown) => void;
 }
 
-export default function HeroSection({ onExplore }: HeroSectionProps) {
+export default function HeroSection({ onResults }: HeroSectionProps) {
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const executeSearch = async (searchQuery: string) => {
+    if (!searchQuery.trim()) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Connect directly to your Timaitha Extractor API route
+      const response = await fetch("/api/extract", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: searchQuery }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Failed to extract track.");
+      }
+
+      // Pass the extracted TAF track data up to the parent view
+      onResults(data.data);
+    } catch (err: unknown) {
+      console.error("Extraction search error:", err);
+      setError(
+        err instanceof Error
+          ? err.message || "Something went wrong during extraction."
+          : "Something went wrong during extraction.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onExplore(query);
+    executeSearch(query);
   };
 
   const handleTagClick = (tag: string) => {
     setQuery(tag);
-    onExplore(tag);
+    executeSearch(tag);
   };
 
   return (
@@ -30,8 +69,8 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
         {/* Left Side: Brand & Hero Search Input */}
         <div className="lg:col-span-6 space-y-6">
           <span className="inline-flex items-center space-x-2 text-xs font-bold tracking-widest uppercase text-indigo-400 bg-indigo-500/10 px-3 py-1.5 rounded-full border border-indigo-500/20">
-            <Sparkles size={13} className="text-indigo-400" />
-            <span>The New Frequency of Sound</span>
+            <Sparkles size={9} className="text-indigo-400" />
+            <span>Exclusive</span>
           </span>
 
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight">
@@ -59,21 +98,35 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by track, artist, or genre..."
-                className="w-full bg-slate-900/90 border border-slate-800 hover:border-slate-700 focus:border-indigo-500/80 rounded-2xl pl-12 pr-36 py-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 shadow-2xl transition backdrop-blur-md"
+                disabled={loading}
+                className="w-full bg-slate-900/90 border border-slate-800 hover:border-slate-700 focus:border-indigo-500/80 rounded-2xl pl-12 pr-36 py-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 shadow-2xl transition backdrop-blur-md disabled:opacity-50"
               />
 
               <button
                 type="submit"
-                className="absolute right-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-xs px-5 py-2.5 rounded-xl shadow-lg transition transform hover:scale-105 active:scale-95 cursor-pointer"
+                disabled={loading}
+                className="absolute right-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-xs px-5 py-2.5 rounded-xl shadow-lg transition transform hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50 disabled:hover:scale-100 flex items-center gap-2"
               >
-                Explore Vault
+                {loading ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    Extracting...
+                  </>
+                ) : (
+                  "Explore Vault"
+                )}
               </button>
             </form>
+
+            {error && (
+              <p className="text-red-400 text-xs mt-2 font-medium">{error}</p>
+            )}
 
             <div className="flex items-center space-x-2 mt-3 text-[11px] text-slate-500 font-medium">
               <span>Popular Tags:</span>
               <button
                 type="button"
+                disabled={loading}
                 className="text-slate-400 hover:text-indigo-400 transition"
                 onClick={() => handleTagClick("Afrobeat")}
               >
@@ -81,6 +134,7 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
               </button>
               <button
                 type="button"
+                disabled={loading}
                 className="text-slate-400 hover:text-indigo-400 transition"
                 onClick={() => handleTagClick("General")}
               >
@@ -88,6 +142,7 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
               </button>
               <button
                 type="button"
+                disabled={loading}
                 className="text-slate-400 hover:text-indigo-400 transition"
                 onClick={() => handleTagClick("Hip-Hop")}
               >

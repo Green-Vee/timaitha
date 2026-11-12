@@ -9,6 +9,7 @@ export interface ITrack {
   audioUrl: string;
   duration?: number;
   downloadCount: number;
+  playCount: number;
   createdAt: Date;
 }
 
@@ -20,6 +21,7 @@ const TrackSchema = new Schema<ITrack>({
   audioUrl: { type: String, required: true },
   duration: { type: Number, default: 0 },
   downloadCount: { type: Number, default: 0 },
+  playCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
 });
 

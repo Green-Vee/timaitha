@@ -14,7 +14,8 @@
     "mongoose": "^9.11.4",
     "next": "16.4.4",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "youtube-dl-exec": "^3.1.19"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",

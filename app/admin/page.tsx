@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import TrackList from "./components/Tracklist";
 import TrackForm from "./components/TrackForm";
 import TrackDetailModal from "./components/TrackDetailModal";
@@ -43,7 +44,7 @@ function Modal({
             ✕
           </button>
         </div>
-        <div className="p-6 max-h-[80vh] overflow-y-auto">{children}</div>
+        <div className="p-1 max-h-[80vh] overflow-y-auto">{children}</div>
       </div>
     </div>
   );
@@ -236,7 +237,7 @@ export default function AdminDashboard() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-lg gap-4">
           <div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight">
-              Timaitha Control Center
+              Timaitha Dashboard
             </h1>
             <p className="text-gray-300 text-sm mt-1">
               Manage your music library and audio assets.
@@ -250,7 +251,18 @@ export default function AdminDashboard() {
               onClick={handleOpenUploadModal}
               className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center space-x-2"
             >
-              <span>+ Upload New Track</span>
+              <span>Upload </span>
+              <span></span>
+            </button>
+            <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+              <span>
+                <Link
+                  href="/"
+                  className="text-xs font-bold tracking-wider uppercase text-white/90 hover:text-white transition"
+                >
+                  Client
+                </Link>
+              </span>
             </button>
           </div>
         </div>

@@ -68,10 +68,10 @@ export default function TrackForm({
   return (
     <div className="bg-slate-900/95 backdrop-blur-xl border border-slate-800 p-1 sm:p-5 rounded-2xl shadow-xl h-fit">
       {/* Header */}
-      <div className="flex justify-between items-center mb-3 pb-2.5 border-b border-slate-800/80">
+      <div className="flex justify-between items-center mb-1 pb-2.5 border-b border-slate-800/80">
         <div className="flex items-center space-x-2">
-          <div className="p-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-indigo-400">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="p-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-indigo-400">
+            <Sparkles className="w-2 h-2" />
           </div>
           <div>
             <h2 className="text-sm font-bold tracking-tight text-slate-100">
@@ -93,7 +93,7 @@ export default function TrackForm({
       </div>
 
       {/* Form */}
-      <form onSubmit={onSubmit} className="space-y-2.5">
+      <form onSubmit={onSubmit} className="space-y-1.2">
         {/* Track Title */}
         <div>
           <label className="block text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-0.5">
