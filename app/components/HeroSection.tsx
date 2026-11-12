@@ -5,11 +5,10 @@ import { useState } from "react";
 import { Search, Sparkles, Loader2 } from "lucide-react";
 
 interface HeroSectionProps {
-  // Pass the extracted tracks/results back up to your parent display view
-  onResults: (results: unknown) => void;
+  onExplore: (query: string) => void;
 }
 
-export default function HeroSection({ onResults }: HeroSectionProps) {
+export default function HeroSection({ onExplore }: HeroSectionProps) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,29 +20,14 @@ export default function HeroSection({ onResults }: HeroSectionProps) {
     setError(null);
 
     try {
-      // Connect directly to your Timaitha Extractor API route
-      const response = await fetch("/api/extract", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query: searchQuery }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || "Failed to extract track.");
-      }
-
-      // Pass the extracted TAF track data up to the parent view
-      onResults(data.data);
+      // Trigger your explore handler passed from page.tsx
+      onExplore(searchQuery);
     } catch (err: unknown) {
       console.error("Extraction search error:", err);
       setError(
         err instanceof Error
           ? err.message || "Something went wrong during extraction."
-          : "Something went wrong during extraction.",
+          : "Something went wrong during extraction."
       );
     } finally {
       setLoading(false);
