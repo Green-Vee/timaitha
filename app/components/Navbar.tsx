@@ -14,13 +14,14 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
   const [isAdmin, setIsAdmin] = useState(false);
   const pathname = usePathname();
 
-  // Check if the current device has an active admin session
   useEffect(() => {
     let isMounted = true;
 
     async function checkAdminStatus() {
       try {
-        const res = await fetch('/api/auth/status', { cache: 'no-store' });
+        const res = await fetch(`/api/auth/status?t=${Date.now()}`, {
+          cache: 'no-store',
+        });
         if (res.ok) {
           const data = await res.json();
           if (isMounted) setIsAdmin(Boolean(data.isAuthenticated));
@@ -36,7 +37,6 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
     };
   }, [pathname]);
 
-  // Hide the public navbar on admin pages for a clean dashboard view
   if (pathname?.startsWith('/admin')) {
     return null;
   }
@@ -50,7 +50,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
     <header className="sticky top-0 z-50 w-full bg-slate-950/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/40 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         
-        {/* Brand Logo with Spinning Vinyl & Hover Glow */}
+        {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-600/30 group-hover:shadow-indigo-500/60 group-hover:scale-110 group-active:scale-95 transition-all duration-300">
             <div className="absolute inset-0 rounded-2xl bg-indigo-400/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -67,7 +67,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
           </div>
         </Link>
 
-        {/* Desktop Navigation Links with Micro-Interactions */}
+        {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-1.5 bg-slate-900/60 border border-white/10 p-1.5 rounded-2xl shadow-inner">
           <button
             onClick={() => handleModalClick("discover")}
@@ -102,7 +102,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
           </a>
         </nav>
 
-        {/* Desktop Control Center Action Button (Visible ONLY when logged in) */}
+        {/* Desktop Control Center (Visible ONLY when logged in) */}
         {isAdmin && (
           <div className="hidden md:flex items-center">
             <Link
@@ -116,13 +116,12 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
           </div>
         )}
 
-        {/* Animated Mobile Hamburger Toggle Button */}
+        {/* Mobile Toggle */}
         <div className="flex md:hidden">
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle navigation menu"
-            aria-expanded={isOpen}
             className="p-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-300 hover:text-white hover:border-indigo-500/40 active:scale-90 transition-all duration-200"
           >
             <div className={`transition-transform duration-300 ${isOpen ? 'rotate-90' : 'rotate-0'}`}>
@@ -132,7 +131,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
         </div>
       </div>
 
-      {/* Smooth Slide-Down Mobile Dropdown Menu */}
+      {/* Mobile Menu Dropdown */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen ? 'max-h-[420px] opacity-100 border-b border-white/10' : 'max-h-0 opacity-0 border-b-0'
@@ -172,7 +171,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
             <span>ABOUT</span>
           </a>
 
-          {/* Control Center Button in Mobile Dropdown (Visible ONLY when logged in) */}
+          {/* Mobile Control Center (Visible ONLY when logged in) */}
           {isAdmin && (
             <div className="pt-2">
               <Link

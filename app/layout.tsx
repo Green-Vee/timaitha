@@ -9,7 +9,8 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "Timaitha Vault",
-  description: "A music library and management system built by Alique_VSI",
+  description:
+    "Discover, Explore, and Enjoy the Timaitha Audio Vault - Your Gateway to a World of Music and Creativity.Build your own audio vault, explore trending tracks, and immerse yourself in the vibrant world of music. Join us today and experience the ultimate audio adventure. Designed and Developed by ThunderProbuids",
 };
 
 export default function RootLayout({
@@ -44,5 +45,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-
